@@ -1,10 +1,12 @@
+
 FROM nvidia/cuda:11.8.0-cudnn8-runtime-ubuntu22.04
 
 ARG user=uework
 ARG pwd=uework@2022
+ARG condapath=/home/miniconda
 #images info
 LABEL version="1.0"
-LABEL description='base on nvidia/cuda:11.8.0-cudnn8-runtime-ubuntu22.04'
+LABEL org.opencontainers.image.description 'base on nvidia/cuda:11.8.0-cudnn8-runtime-ubuntu22.04'
 
 #安装依赖
 RUN  apt-get update && apt-get install -y sudo
@@ -30,9 +32,15 @@ USER ${user}
 RUN echo ${pwd}|sudo -S apt-get update && echo ${pwd}|sudo -S apt-get install openssh-server -y
 RUN cd /home  && set -e 
 RUN wget https://repo.anaconda.com/miniconda/Miniconda3-py38_4.12.0-Linux-x86_64.sh  -O ~/miniconda.sh
-RUN bash ~/miniconda.sh -b -p /home/miniconda 
-RUN ~/miniconda/bin/conda init $(echo $SHELL | awk -F '/' '{print $NF}') 
+RUN echo ${pwd}|sudo -S bash ~/miniconda.sh -b -p /home/miniconda 
+RUN ${condapath}/bin/conda init $(echo $SHELL | awk -F '/' '{print $NF}') 
 RUN echo 'Successfully installed miniconda...' && echo -n 'Conda version: ' 
-RUN ~/miniconda/bin/conda --version && echo -e '\n' 
+RUN ${condapath}/bin/conda --version && echo -e '\n' 
+
+#安装pytorch，tensorflow-gpu，jupyter
+Run echo ${pwd}|sudo -S ${condapath}/bin/conda install -y pytorch tensorflow-gpu
+Run echo ${pwd}|sudo -S ${condapath}/bin/conda install -y -c conda-forge notebook 
+Run echo ${pwd}|sudo -S ${condapath}/bin/conda install -y -c conda-forge nb_conda_kernels
+
 RUN exec bash
 
