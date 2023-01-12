@@ -1,11 +1,38 @@
-# syntax=docker/dockerfile:1
-FROM busybox:latest
-COPY --chmod=755 <<EOF /app/run.sh
-#!/bin/sh
-while true; do
-  echo -ne "The time is now $(date +%T)\\r"
-  sleep 1
-done
-EOF
+FROM nvidia/cuda:11.8.0-cudnn8-runtime-ubuntu22.04
 
-ENTRYPOINT /app/run.sh
+ARG user=uework
+ARG pwd=uework@2022
+#images info
+LABEL version="1.0"
+LABEL description='base on nvidia/cuda:11.8.0-cudnn8-runtime-ubuntu22.04'
+
+#安装依赖
+RUN  apt-get update && apt-get install -y sudo
+
+#添加用户 赋予sudo权限 指定密码
+RUN useradd --create-home --no-log-init --shell /bin/bash ${user} \
+    && adduser ${user} sudo \
+    && echo "${user}:${pwd}" | chpasswd
+
+# 改变用户的UID和GID
+# RUN usermod -u 1000 ${user} && usermod -G 1000 ${user}
+
+# 指定容器起来的工作目录
+WORKDIR /home/${user}
+
+#复制本地template下的文件到目标根目录
+ADD . /home/uework
+
+# 指定容器起来的登录用户
+USER ${user}
+
+#安装miniconda && ssh
+RUN echo ${pwd}|sudo -S apt-get update && echo ${pwd}|sudo -S apt-get install openssh-server -y
+RUN cd /home  && set -e 
+RUN wget https://repo.anaconda.com/miniconda/Miniconda3-py38_4.12.0-Linux-x86_64.sh  -O ~/miniconda.sh
+RUN bash ~/miniconda.sh -b -p /home/miniconda 
+RUN ~/miniconda/bin/conda init $(echo $SHELL | awk -F '/' '{print $NF}') 
+RUN echo 'Successfully installed miniconda...' && echo -n 'Conda version: ' 
+RUN ~/miniconda/bin/conda --version && echo -e '\n' 
+RUN exec bash
+
