@@ -38,7 +38,15 @@ RUN ${condapath}/bin/conda --version && echo -e '\n'
 #Run echo ${pwd}|sudo -S ${condapath}/bin/conda install -y pytorch==1.12.1 && echo ${pwd}|sudo -S ${condapath}/bin/conda install -y torchvision==0.13.1 && echo ${pwd}|sudo -S ${condapath}/bin/conda install -y torchaudio==0.12.1 && echo ${pwd}|sudo -S ${condapath}/bin/conda install -y cudatoolkit=11.3 && echo ${pwd}|sudo -S ${condapath}/bin/conda install -y pytorch-lightning=1.5.9 
 #Run echo ${pwd}|sudo -S ${condapath}/bin/conda install -y cv2 && echo ${pwd}|sudo -S ${condapath}/bin/conda install -y gradio && echo ${pwd}|sudo -S ${condapath}/bin/conda install -y diffusers=0.9.0 && echo ${pwd}|sudo -S ${condapath}/bin/conda install -y numpy && echo ${pwd}|sudo -S ${condapath}/bin/conda install -y PIL && echo ${pwd}|sudo -S ${condapath}/bin/conda install -y random 
  
-Run echo ${pwd}|sudo -S ${condapath}/bin/conda install -y pytorch==1.12.1 torchvision==0.13.1 torchaudio==0.12.1 cudatoolkit=11.3 -c pytorch -c conda-forge   
-Run echo ${pwd}|sudo -S ${condapath}/bin/conda install -y cv2 gradio diffusers=0.9.0 numpy PIL random
+Run echo ${pwd}|sudo -S ${condapath}/bin/conda install -y pytorch==1.12.1 -c pytorch \
+echo ${pwd}|sudo -S ${condapath}/bin/conda install -y torchvision==0.13.1 -c pytorch\
+echo ${pwd}|sudo -S ${condapath}/bin/conda install -y torchaudio==0.12.1 -c pytorch\
+echo ${pwd}|sudo -S ${condapath}/bin/conda install -y cudatoolkit=11.3 -c pytorch   
+Run echo ${pwd}|sudo -S ${condapath}/bin/conda install -y cv2\
+echo ${pwd}|sudo -S ${condapath}/bin/conda install -y gradio\
+echo ${pwd}|sudo -S ${condapath}/bin/conda install -y diffusers=0.9.0\
+echo ${pwd}|sudo -S ${condapath}/bin/conda install -y numpy \
+echo ${pwd}|sudo -S ${condapath}/bin/conda install -y PIL \
+echo ${pwd}|sudo -S ${condapath}/bin/conda install -y random
  
 RUN exec bash
