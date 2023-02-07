@@ -43,11 +43,11 @@ RUN echo ${pwd}|sudo -S ${condapath}/bin/conda install -y torchvision==0.13.1 -c
 RUN echo ${pwd}|sudo -S ${condapath}/bin/conda install -y torchaudio==0.12.1 -c pytorch
 RUN echo ${pwd}|sudo -S ${condapath}/bin/conda install -y cudatoolkit=11.3  
 
-RUN echo ${pwd}|sudo -S ${condapath}/bin/conda install -y opencv
-RUN echo ${pwd}|sudo -S ${condapath}/bin/conda install -y gradio
-RUN echo ${pwd}|sudo -S ${condapath}/bin/conda install -y diffusers -c conda-forge
-RUN echo ${pwd}|sudo -S ${condapath}/bin/conda install -y numpy 
-RUN echo ${pwd}|sudo -S ${condapath}/bin/conda install -y pillow  
-RUN echo ${pwd}|sudo -S ${condapath}/bin/conda install -y random 
+RUN echo ${pwd}|sudo -S ${condapath}/bin/pip install -y opencv
+RUN echo ${pwd}|sudo -S ${condapath}/bin/pip install -y gradio
+RUN echo ${pwd}|sudo -S ${condapath}/bin/pip install -y diffusers
+RUN echo ${pwd}|sudo -S ${condapath}/bin/pip install -y numpy 
+RUN echo ${pwd}|sudo -S ${condapath}/bin/pip install -y pillow  
+RUN echo ${pwd}|sudo -S ${condapath}/bin/pip install -y random 
  
 RUN exec bash
